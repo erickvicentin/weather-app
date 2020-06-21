@@ -53,26 +53,25 @@ app.get("/weather", (req, res) => {
   const address = req.query.address;
 
   if (!address || address === "") {
-    res.send({
+    return res.send({
       error: "Input an valid location",
     });
   } else {
-    geocode(address, (geoError, { latitude, longitude, location }) => {
-      if (geoError) {
-        return res.send({ geoError });
-      }
-
-      forecast(latitude, longitude, (forecastError, forecastData) => {
-        if (forecastError) {
-          return res.send({ forecastError });
-        }
-
-        res.send({
-          forecast: forecastData,
-          location,
-          address,
+    geocode(address, (error, { latitude, longitude, location } = {}) => {
+      if (error) {
+        return res.send({ error });
+      } else {
+        forecast(latitude, longitude, (error, forecastData) => {
+          if (error) {
+            return res.send({ error });
+          }
+          res.send({
+            forecast: forecastData,
+            location,
+            address,
+          });
         });
-      });
+      }
     });
   }
 });

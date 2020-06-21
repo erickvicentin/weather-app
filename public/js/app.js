@@ -26,9 +26,12 @@ weatherForm.addEventListener("submit", (e) => {
 
   fetch(`/weather?address=${location}`).then((response) => {
     response.json().then((data) => {
+      console.log(data);
+
       if (data.error) {
         weather_title.textContent = `${data.error}`;
       } else {
+        console.log(data);
         const dataTime = data.forecast.time.split(" ")[1];
 
         weather_img.src = `${data.forecast.icon}`;
